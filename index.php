@@ -1,3 +1,14 @@
 <?php
+require_once('loader.php');
 
-echo phpinfo();
+/*$home = new classes\hero();
+print_r($home->write());
+echo '<br/><br/><br/>';*/
+
+$hero = new classes\Hero($HeroStats);
+//$hero->write();
+echo '<br/><br/><br/><br/>';
+$beast = new classes\Beast($BeastStats);
+//$beast->write();
+
+$encounter = new classes\Battle($hero, $beast);
