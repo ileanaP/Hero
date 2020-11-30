@@ -11,4 +11,6 @@ echo '<br/><br/><br/><br/>';
 $beast = new classes\Beast($BeastStats);
 //$beast->write();
 
-$encounter = new classes\Battle($hero, $beast);
+$battle = new classes\Battle($hero, $beast);
+
+$battle->startBattle();

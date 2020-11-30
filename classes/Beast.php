@@ -4,13 +4,17 @@ namespace classes;
 
 class Beast extends CombatFactory
 {
-	private $stats;
 	private $type;
 	
 	public function __construct(CreatureStats $stats)
 	{
-		$this->stats = $stats;
-		$this->type  = CreatureType::Beast;
+		parent::__construct($stats);
+		$this->_typeC  = CreatureType::Beast;
+	}
+	
+	public function attack(&$defender)
+	{
+		parent::attack($defender);
 	}
 	
 	public function write()

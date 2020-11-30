@@ -9,35 +9,28 @@ class Battle
 	
 	public function __construct(CombatFactory $attacker, CombatFactory $defender)
 	{
-		$attackerSpeed = $attacker->stats->getSpeed();
-		$defenderSpeed = $defender->stats->getSpeed();
+		$attackerSpeed = $attacker->getStats()->getSpeed();
+		$defenderSpeed = $defender->getStats()->getSpeed();
 		
-		if($attackerSpeed == $defenderSpeed)
+		$defaultOrder = true;
+
+		if(!($attackerSpeed > $defenderSpeed))
 		{
-			if($attacker->stats->getLuck() > $defender->stats->getLuck())
+			$defaultOrder = false;
+		}
+		else if($attackerSpeed == $defenderSpeed)
+		{
+			$attackerLuck  = $attacker->getStats()->getLuck();
+			$defenderLuck  = $defender->getStats()->getLuck();
+			
+			if(!($attackerLuck >= $defenderLuck))
 			{
-				$this->_attacker   = $attacker;
-				$this->_defender   = $defender;
-			}
-			else
-			{
-				$this->_defender   = $attacker;
-				$this->_attacker   = $defender;
+				$defaultOrder = false;
 			}
 		}
-		else
-		{
-			if($attackerSpeed > $defenderSpeed)
-			{
-				$this->_attacker   = $attacker;
-				$this->_defender   = $defender;
-			}
-			else
-			{
-				$this->_defender   = $attacker;
-				$this->_attacker   = $defender;
-			}			
-		}
+
+		$this->_attacker = $defaultOrder ? $attacker : $defender;
+		$this->_defender = $defaultOrder ? $defender : $attacker;
 		
 		$this->_round = 0;
 	}
@@ -51,35 +44,26 @@ class Battle
 	{
 		if($this->_round % 2 == 0)
 		{
-			$this->_attacker->attack($defender);
+			$this->_attacker->attack($this->_defender);
 		}
 		else
 		{
-			$this->_defender->attack($attacker);
+			$this->_defender->attack($this->_attacker);
 		}
 		
 		$this->_round++;
 		
-		$attackerHealth = $this->_attacker->stats->getHealth();
-		$defenderHealth = $this->_defender->stats->getHealth();
+		$attackerHealth = $this->_attacker->getStats()->getHealth();
+		$defenderHealth = $this->_defender->getStats()->getHealth();
 		
 		echo 'Round ' . $this->_round . ':'.'<br/>';
-		echo '___';		
-		echo 'attackerHealth: ' . $attackerHealth . '( ' . CreatureType($this->_attacker->type) . ' )'.'<br/>';
-		echo 'defenderHealth: ' . $defenderHealth . '( ' . CreatureType($this->_defender->type) . ' )'.'<br/><br/>';
+		echo '___'.'<br/>';		
+		echo 'attackerHealth: ' . $attackerHealth . '( ' . ($this->_attacker->getTypeC() == CreatureType::Hero ? 'hero' : 'beast') . ' )'.'<br/>';
+		echo 'defenderHealth: ' . $defenderHealth . '( ' . ($this->_defender->getTypeC() == CreatureType::Hero ? 'beast' : 'hero') . ' )'.'<br/><br/>';
 		
-		if(!($attackerHealth == 0 || $defenderHealth == 0 || $round == 20))
+		if(!($attackerHealth == 0 || $defenderHealth == 0 || $this->_round == 20))
 		{
 			$this->battleRound();
 		}
-		else
-		{
-			
-		}
-
-	
-		/*echo '<br/><br/>';
-		echo $defender->getLuck();
-		echo '<br/><br/>';*/
 	}
 }
