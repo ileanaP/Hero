@@ -7,8 +7,9 @@ class Battle
 	private $_attacker;
 	private $_round;
 	
-	public function __construct(CombatFactory $attacker, CombatFactory $defender)
+	public function __construct($attacker, $defender)
 	{
+		
 		$attackerSpeed = $attacker->getStats()->getSpeed();
 		$defenderSpeed = $defender->getStats()->getSpeed();
 		
@@ -37,11 +38,14 @@ class Battle
 	
 	public function startBattle()
 	{
+		$this->_attacker->setAttackValue($this->_defender);
+		$this->_defender->setAttackValue($this->_attacker);
 		$this->battleRound();
 	}
 	
 	public function battleRound()
 	{
+		
 		if($this->_round % 2 == 0)
 		{
 			$this->_attacker->attack($this->_defender);

@@ -2,7 +2,7 @@
 
 namespace classes;
 
-class Beast extends CombatFactory
+class Beast extends BasicCreature implements CreatureFactory
 {
 	private $type;
 	
@@ -10,15 +10,5 @@ class Beast extends CombatFactory
 	{
 		parent::__construct($stats);
 		$this->_typeC  = CreatureType::Beast;
-	}
-	
-	public function attack(&$defender)
-	{
-		parent::attack($defender);
-	}
-	
-	public function write()
-	{
-		echo $this->stats->getLuck();
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace classes;
 
-class Hero extends CombatFactory implements AttackTwiceTrait
+class Hero extends BasicCreature implements CreatureFactory, AttackTwiceTrait, DefendTwiceTrait
 {	
 	public function __construct(CreatureStats $stats)
 	{
@@ -25,8 +25,6 @@ class Hero extends CombatFactory implements AttackTwiceTrait
 	public function tryAttackTwice(&$defender)
 	{
 		$chanceToAttackTwice = rand(1,10);
-			
-		$chanceToAttackTwice=1;
 		
 		if($chanceToAttackTwice == 1 && $defender->getStats()->getHealth() > 0)
 		{
@@ -34,8 +32,22 @@ class Hero extends CombatFactory implements AttackTwiceTrait
 		}
 	}
 	
-	public function defendFrom(&$attacker)
+	public function getDefendValue($attackValue)
 	{
-		echo 'I defend';
+		$totalDefence = parent::getDefendValue($attackValue);
+		
+		$totalDefence += $this->tryDefendTwice($attackValue);
+		
+		return min($totalDefence, $attackValue);
+	}
+
+	public function tryDefendTwice($attackValue)
+	{
+		$chanceToDefendTwice = rand(1,5);
+		
+		if($chanceToDefendTwice == 1)
+		{
+			return $attackValue/2;
+		}
 	}
 }
