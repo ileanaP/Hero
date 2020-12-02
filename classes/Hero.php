@@ -10,11 +10,6 @@ class Hero extends BasicCreature implements CreatureFactory, AttackTwiceTrait, D
 		$this->_typeC  = CreatureType::Hero;
 	}
 	
-	public function write()
-	{
-		echo $this->stats->getHealth();
-	}
-	
 	public function attack(&$defender)
 	{
 		parent::attack($defender);
@@ -33,7 +28,7 @@ class Hero extends BasicCreature implements CreatureFactory, AttackTwiceTrait, D
 	}
 	
 	public function getDefendValue($attackValue)
-	{
+	{		
 		$totalDefence = parent::getDefendValue($attackValue);
 		
 		$totalDefence += $this->tryDefendTwice($attackValue);
