@@ -46,7 +46,7 @@ class BasicCreature implements CreatureFactory
 	
 	public function getDefendValue($attackValue)
 	{
-		return $this->getStats()->getLuck() <= rand(0,100) ? $attackValue : 0;
+		return ($this->getStats()->getLuck() <= rand(0,100)) ? $attackValue : 0;
 	}
 	
 	public function lowerHealth($attackValue)
